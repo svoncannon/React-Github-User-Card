@@ -4,7 +4,7 @@ import Input from './Input'
 import Followers from './Followers'
 
 import axios from 'axios'
-import { render } from '@testing-library/react'
+
 
 class App extends React.Component {
     state = {
@@ -15,19 +15,57 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        const baseUrl = 
+        const baseUrl = 'https://api.github.com/users'
+        axios.get(`${baseUrl}/svoncannon`)
+        .then(res => {
+            console.log(res.data)
+            this.setState({ user: res.data})
+            axios.get(`${baseUrl}/${res.data.login}/followers`)
+            .then(res => {
+                this.setState({ followers: res.data })
+            })
+        })
+        .catch(err => {
+            this.setState({ error: err.response.data.message })
+        })
 
-    }
+    
 
 }
 
-inputHandler = e => this.setState({})
+inputHandler = e => this.setState({ query: e.target.value })
 
 submitHandler = e => {
+    e.preventDefault()
+    const baseUrl = 'https://api.github.com/users'
+    const term = this.state.query || 'svoncannon'
+    axios.get(`${baseUrl}/${term}`)
+    .then(res => {
+        this.setState({ user: res.data})
+        axios.get(`${baseUrl}/${res.data.login}/followers`)
+        .then(res => {
+            this.setState({ followers: res.data})
+        })
+    })
+    .catch(err => {
+        this.setState({error: err.response.data.message })
+    })
 
 }
 
 clickHandler = id => {
+    const baseUrl = 'https://api.github.com/users'
+    axios.get(`${baseUrl}/${id}`)
+    .then(res => {
+        this.setState({ user: res.data})
+        axios.get(`${baseUrl}/${res.data.login}/followers`)
+        .then(res => {
+            this.setState({ followers: res.data})
+        })
+    })
+    .catch(err => {
+        this.setState({ error: err.response.data.message})
+    })
 
 }
 
@@ -47,6 +85,7 @@ render() {
     } else {
         return <h1>Loading...</h1>
     }
+}
 }
 
 

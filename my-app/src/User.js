@@ -4,7 +4,7 @@ import styled from 'styled-components'
 const Container = styled.div`
     border: 1px solid transparent;
     border-radius: 10px;
-    background: #1f1f1f;
+    background: purple;
     display: flex;
     margin: 2% auto;
     padding: 1%;
@@ -19,13 +19,16 @@ const Image = styled.img`
 const Info = styled.div`
     flex-basis: 50%;
     text-align: center;
+
     h3 {
         font-size: 2rem;
         font-weight: 700;
     }
+
     h4 {
         font-size: 1.4rem;
     }
+
     p {
         font-size: 1rem;
         line-height: 1.5;
@@ -33,7 +36,7 @@ const Info = styled.div`
 `
 
 function User(props) {
-    const { followers, location, login, bio, public_repos, avatar_url } = props.user 
+    const { followers, location, login, bio, name, public_repos, avatar_url } = props.user 
 
     return (
         <Container onClick={() => props.click(login)}>
